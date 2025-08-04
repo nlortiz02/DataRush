@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './login.module.css';
 import Image from "next/legacy/image";
 import axios from 'axios';
@@ -11,7 +11,17 @@ const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // No renderizar hasta que el componente esté montado en el cliente
+  if (!isMounted) {
+    return null;
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,11 +80,12 @@ const LoginPage = () => {
         
         <div className={styles.logoContainer}>
           <Image 
-            src="/src/LOGODATARUSH.png" 
+            src="/src/logos/logodataclarov2.png" 
             alt="Logo Data Rush" 
-            width={120} 
-            height={80} 
+            width={140} 
+            height={120} 
             objectFit="contain"
+            priority
           />
         </div>
 
@@ -94,6 +105,7 @@ const LoginPage = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
+                  autoComplete="username"
                 />
                 <div className={styles.inputIcon}>
                   <svg viewBox="0 0 24 24" width="20" height="20">
@@ -112,6 +124,7 @@ const LoginPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  autoComplete="current-password"
                 />
                 <div className={styles.inputIcon}>
                   <svg viewBox="0 0 24 24" width="20" height="20">
