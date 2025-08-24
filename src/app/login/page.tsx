@@ -34,9 +34,11 @@ const LoginPage = () => {
       // Limpiar datos previos
       localStorage.clear();
       Cookies.remove('username');
-      
-      // Establecer nuevas credenciales usando el username de la BD
+
+      // Guarda el token en localStorage
       localStorage.setItem('token', token);
+
+      // Guarda el usuario en la cookie 'username'
       Cookies.set('username', dbUsername, {
         expires: 2,
         path: '/'
