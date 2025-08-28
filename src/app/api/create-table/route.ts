@@ -41,8 +41,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'El nombre de la tabla ya está en uso.' }, { status: 409 });
     }
 
-    const colsSQL = columns.map(col => `\`${col.name}\` ${col.type}`).join(', ');
-    const sql = `CREATE TABLE IF NOT EXISTS \`${tableName}\` (${colsSQL})`;
+    // Suponiendo que recibes { tableName, columns }
+    const columnsDef = columns.map(col => 
+      col.name === 'id' 
+        ? '`id` INT AUTO_INCREMENT PRIMARY KEY' 
+        : `\`${col.name}\` ${col.type}`
+    ).join(', ');
+
+    const sql = `CREATE TABLE \`${tableName}\` (${columnsDef})`;
 
     await db.query(sql);
 

@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
     const { tableName } = await req.json();
     if (!tableName) return NextResponse.json({ success: false });
     const db = await getDB();
+    // Elimina la tabla por nombre
     await db.query(`DROP TABLE IF EXISTS \`${tableName}\``);
     await db.query('DELETE FROM tablas_creadas WHERE nombre = ?', [tableName]);
     await db.end();

@@ -30,6 +30,7 @@ export function useSessionGuard() {
   const router = useRouter();
   const lastUsernameRef = useRef<string | null>(null);
   const lastTokenRef = useRef<string | null>(null);
+  const redirectedRef = useRef<boolean>(false); // Nueva referencia
 
   useEffect(() => {
     const initialToken = getTokenFromLocalStorage();
@@ -43,10 +44,14 @@ export function useSessionGuard() {
       const token = getTokenFromLocalStorage();
       const username = getUsernameFromCookies();
 
+      // Si ya se redirigió, no hacer nada
+      if (redirectedRef.current) return;
+
       // Si no hay token o username, borra ambos y redirige
       if (!isTokenValid(token) || !isUsernameValid(username)) {
         localStorage.removeItem('token');
         deleteCookie('username');
+        redirectedRef.current = true;
         router.push('/login');
         return;
       }
@@ -62,6 +67,7 @@ export function useSessionGuard() {
       if (username !== lastUsernameRef.current) {
         localStorage.removeItem('token');
         deleteCookie('username');
+        redirectedRef.current = true;
         router.push('/login');
         return;
       }
@@ -70,6 +76,7 @@ export function useSessionGuard() {
       if (token !== lastTokenRef.current) {
         localStorage.removeItem('token');
         deleteCookie('username');
+        redirectedRef.current = true;
         router.push('/login');
         return;
       }
