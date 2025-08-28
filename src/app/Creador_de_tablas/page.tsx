@@ -13,7 +13,11 @@ const DATA_TYPES = [
 
 export default function TableCreator() {
   useSessionGuard();
-  const [columns, setColumns] = useState([{ name: '', type: DATA_TYPES[0].value }]);
+  // Inicializa con columna id como clave primaria
+  const [columns, setColumns] = useState([
+    { name: 'id', type: 'INT AUTO_INCREMENT PRIMARY KEY', fixed: true },
+    { name: '', type: DATA_TYPES[0].value }
+  ]);
   const [tableName, setTableName] = useState('');
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
@@ -22,6 +26,8 @@ export default function TableCreator() {
   const [activeTab, setActiveTab] = useState<'crear' | 'plantillas'>('crear');
 
   const handleColumnChange = (idx, field, value) => {
+    // No permitir editar la columna id
+    if (columns[idx].fixed) return;
     const newCols = [...columns];
     newCols[idx][field] = value;
     setColumns(newCols);
@@ -32,6 +38,8 @@ export default function TableCreator() {
   };
 
   const removeColumn = (idx) => {
+    // No permitir eliminar la columna id
+    if (columns[idx].fixed) return;
     setColumns(columns.filter((_, i) => i !== idx));
   };
 
@@ -43,15 +51,18 @@ export default function TableCreator() {
       setError('El nombre de la tabla es obligatorio.');
       return;
     }
-    if (columns.some(col => !col.name.trim())) {
+    // Validar solo columnas no fijas
+    if (columns.some(col => !col.fixed && !col.name.trim())) {
       setError('Todas las columnas deben tener nombre.');
       return;
     }
     try {
+      // Filtra columnas vacías y mantiene la columna id
+      const colsToSend = columns.filter(col => col.fixed || col.name.trim());
       const res = await fetch('/api/create-table', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tableName, columns }),
+        body: JSON.stringify({ tableName, columns: colsToSend }),
       });
       const data = await res.json();
       if (res.status === 409) {
@@ -188,6 +199,7 @@ export default function TableCreator() {
                             onChange={e => handleColumnChange(idx, 'name', e.target.value)}
                             className={styles.inputText}
                             placeholder="Nombre columna"
+                            disabled={col.fixed}
                           />
                         </div>
                       </td>
@@ -197,15 +209,21 @@ export default function TableCreator() {
                             className={styles.selectType}
                             value={col.type}
                             onChange={e => handleColumnChange(idx, 'type', e.target.value)}
+                            disabled={col.fixed}
                           >
-                            {DATA_TYPES.map(dt => (
-                              <option key={dt.value} value={dt.value}>{dt.label}</option>
-                            ))}
+                            {col.fixed ? (
+                              <option value={col.type}>INT AUTO_INCREMENT PRIMARY KEY</option>
+                            ) : (
+                              DATA_TYPES.map(dt => (
+                                <option key={dt.value} value={dt.value}>{dt.label}</option>
+                              ))
+                            )}
                           </select>
                         </div>
                       </td>
                       <td>
-                        {columns.length > 1 && (
+                        {/* No permitir eliminar la columna id */}
+                        {columns.length > 2 && !col.fixed && (
                           <button onClick={() => removeColumn(idx)} title="Eliminar columna">-</button>
                         )}
                       </td>
