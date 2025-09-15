@@ -1,0 +1,261 @@
+/* Fondo general oscuro con glassmorphism minimalista */
+.glassBg {
+  background: #111;
+  min-height: calc(100vh - 140px);
+  width: 100vw;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  animation: fadeInBg 1.2s;
+}
+
+.glassContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: calc(100vh - 140px);
+  width: 100vw;
+  background: rgba(20, 20, 30, 0.85);
+  border-radius: 0;
+  box-shadow: 0 8px 32px 0 rgba(41, 128, 185, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid #2980b9;
+  border-top: none;
+  padding: 0;
+  margin: 0;
+  animation: fadeInContainer 1s;
+}
+
+.sectionContent {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 12px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 18px;
+  animation: fadeInSection 1.2s;
+}
+
+.subheading {
+  color: #2980b9;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  text-align: left;
+}
+
+.table {
+  background: rgba(20, 20, 30, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 2px 16px rgba(41, 128, 185, 0.10);
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin-bottom: 0;
+  transition: box-shadow 0.3s, transform 0.2s;
+  overflow: hidden;
+  animation: fadeInTable 1.2s;
+  font-size: 0.95rem;
+}
+
+.table th, .table td {
+  border: none;
+  padding: 7px 8px;
+  color: #e3eafc;
+  background: rgba(41, 128, 185, 0.05);
+  transition: background 0.2s, color 0.2s;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.table th:last-child,
+.table td:last-child {
+  width: 48px;
+  min-width: 48px;
+  text-align: center;
+  padding-left: 0;
+  padding-right: 6px;
+}
+
+.table td:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table th {
+  font-weight: 600;
+  background: rgba(41, 128, 185, 0.18);
+  color: #2980b9;
+  font-size: 1rem;
+  border-bottom: 2px solid #2980b9;
+}
+
+.table tr {
+  transition: background 0.2s;
+}
+.table tr:hover {
+  background: rgba(41, 128, 185, 0.18);
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+/* Botones de acciones en la tabla */
+.table button {
+  background: linear-gradient(90deg, #111 0%, #2980b9 100%);
+  color: #fff;
+  border: 2px solid #2980b9;
+  border-radius: 9px;
+  padding: 8px;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 12px rgba(41, 128, 185, 0.18);
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s, color 0.2s, border 0.2s;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.table button:hover {
+  background: #2980b9;
+  color: #fff;
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 6px 24px rgba(41, 128, 185, 0.32);
+  border-color: #fff;
+}
+
+.table button:active {
+  transform: scale(0.98);
+}
+
+/* Estilos para los iconos de orden y filtro en los encabezados de la tabla */
+.sortIcons {
+  display: inline-flex;
+  gap: 2px;
+  margin-left: 6px;
+}
+.iconBtn {
+  background: none;
+  border: none;
+  color: #2980b9;
+  cursor: pointer;
+  font-size: 1.1em;
+  padding: 0 2px;
+  transition: color 0.2s;
+  vertical-align: middle;
+}
+.iconBtn:hover {
+  color: #fff;
+}
+
+/* Scrollbar minimalista */
+::-webkit-scrollbar {
+  width: 6px;
+  background: rgba(41, 128, 185, 0.12);
+}
+::-webkit-scrollbar-thumb {
+  background: #2980b9;
+  border-radius: 6px;
+}
+
+/* Animaciones */
+@keyframes fadeInBg {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeInContainer {
+  from { opacity: 0; transform: scale(1.05);}
+  to { opacity: 1; transform: scale(1);}
+}
+@keyframes fadeInSection {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+@keyframes fadeInTable {
+  from { opacity: 0; transform: scale(0.98);}
+  to { opacity: 1; transform: scale(1);}
+}
+
+/* Estilos para el popup de filtro visual con búsqueda y checkboxes */
+.filterPopup {
+  position: absolute;
+  top: 48px;
+  left: 32px;
+  min-width: 220px;
+  background: #222e;
+  border: 2px solid #2980b9;
+  border-radius: 10px;
+  box-shadow: 0 4px 24px rgba(41,128,185,0.18);
+  z-index: 100;
+  padding: 16px 14px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeInTable 0.5s;
+}
+.filterHeader {
+  font-weight: 600;
+  color: #2980b9;
+  margin-bottom: 4px;
+}
+.filterSearch {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #2980b9;
+  background: #111;
+  color: #e3eafc;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+.filterList {
+  max-height: 120px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.filterItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  color: #e3eafc;
+}
+.filterActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.filterActions button {
+  background: linear-gradient(90deg, #111 0%, #2980b9 100%);
+  color: #fff;
+  border: 2px solid #2980b9;
+  border-radius: 7px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 12px rgba(41,128,185,0.18);
+  transition: background 0.3s, color 0.2s, border 0.2s;
+}
+.filterActions button:hover {
+  background: #2980b9;
+  color: #fff;
+  border-color: #fff;
+}
