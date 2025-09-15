@@ -95,7 +95,7 @@ export default function Header() {
             )}
           </div>
 
-          {/* Botones placeholder */}
+          {/* Botones placeholders */}
           <button className={styles.navBtn} disabled>Botón 2</button>
           <button className={styles.navBtn} disabled>Botón 3</button>
           <button className={styles.navBtn} disabled>Botón 4</button>
