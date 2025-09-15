@@ -1,7 +1,7 @@
 /* Fondo general oscuro con glassmorphism minimalista */
 .glassBg {
   background: #111;
-  min-height: 100vh;
+  min-height: calc(100vh - 140px);
   width: 100vw;
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
   display: flex;
@@ -17,7 +17,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 140px);
   width: 100vw;
   background: rgba(20, 20, 30, 0.85);
   border-radius: 0;
@@ -25,6 +25,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 2px solid #2980b9;
+  border-top: none;
   padding: 0;
   margin: 0;
   animation: fadeInContainer 1s;
