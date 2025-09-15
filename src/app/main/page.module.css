@@ -1,13 +1,111 @@
+/* Fondo principal con efecto vidrio */
 .container {
+  min-height: 100vh;
+  background: #111;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  animation: fadeInBg 1.2s;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 20, 30, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  pointer-events: none;
+}
+
+/* Contenido principal */
+.mainContent {
+  flex: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100%;
+  justify-content: center;
+  padding: 2rem;
+  min-height: calc(100vh - 140px);
+}
+
+.welcomeSection {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  max-width: 600px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: fadeInSection 1.2s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .title {
-  font-size: 2rem;
-  color: #333;
+  font-size: 2.5rem;
+  color: white;
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
   margin: 0;
+  font-weight: 400;
+}
+
+/* Animaciones adicionales para consistencia */
+.container {
+  animation: fadeInBg 1.2s;
+}
+
+.header {
+  animation: fadeInContainer 1s;
+}
+
+.welcomeSection {
+  animation: fadeInSection 1.2s;
+}
+
+/* Scrollbar minimalista */
+::-webkit-scrollbar {
+  width: 6px;
+  background: rgba(41, 128, 185, 0.12);
+}
+::-webkit-scrollbar-thumb {
+  background: #2980b9;
+  border-radius: 6px;
+}
+
+/* Animaciones globales */
+@keyframes fadeInBg {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeInContainer {
+  from { opacity: 0; transform: scale(1.05);}
+  to { opacity: 1; transform: scale(1);}
+}
+@keyframes fadeInSection {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
 }

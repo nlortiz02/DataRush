@@ -1,0 +1,354 @@
+/* Fondo general oscuro con glassmorphism minimalista */
+.glassBg {
+  background: #111;
+  min-height: calc(100vh - 140px);
+  width: 100vw;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  animation: fadeInBg 1.2s;
+}
+
+/* Contenedor principal compacto y centrado */
+.glassContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: calc(100vh - 140px);
+  width: 100vw;
+  background: rgba(20, 20, 30, 0.85);
+  border-radius: 0;
+  box-shadow: 0 8px 32px 0 rgba(41, 128, 185, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid #2980b9;
+  border-top: none;
+  padding: 0;
+  margin: 0;
+  animation: fadeInContainer 1s;
+}
+
+/* Sección interna compacta y amplia */
+.sectionContent {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 12px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 18px;
+  animation: fadeInSection 1.2s;
+}
+
+/* Títulos y textos */
+.heading {
+  color: #2980b9;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  text-align: left;
+}
+
+.subheading {
+  color: #2980b9;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  text-align: left;
+}
+
+.label {
+  color: #2980b9;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+/* Tabla glassmorph compacta */
+.table {
+  background: rgba(20, 20, 30, 0.95);
+  border-radius: 10px;
+  box-shadow: 0 2px 16px rgba(41, 128, 185, 0.10);
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin-bottom: 0;
+  transition: box-shadow 0.3s, transform 0.2s;
+  overflow: hidden;
+  animation: fadeInTable 1.2s;
+  font-size: 0.95rem;
+}
+
+.table th, .table td {
+  border: none;
+  padding: 7px 8px;
+  color: #e3eafc;
+  background: rgba(41, 128, 185, 0.05);
+  transition: background 0.2s, color 0.2s;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+/* Nueva regla: ancho fijo para la celda de acciones */
+.table th:last-child,
+.table td:last-child {
+  width: 48px; /* Espacio suficiente para el botón */
+  min-width: 48px;
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Centra el botón verticalmente y horizontalmente */
+.table td:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table th {
+  font-weight: 600;
+  background: rgba(41, 128, 185, 0.18);
+  color: #2980b9;
+  font-size: 1rem;
+  border-bottom: 2px solid #2980b9;
+}
+
+.table tr {
+  transition: background 0.2s;
+}
+/* Animación hover más suave, sin "pop-up" */
+.table tr:hover {
+  background: rgba(41, 128, 185, 0.18);
+  /* Elimina transform: scale */
+}
+
+/* Estilo para el campo id bloqueado */
+.idBlocked {
+  background: rgba(41,128,185,0.10);
+  color: #888 !important;
+  cursor: not-allowed;
+  opacity: 0.7;
+  border: 2px solid #2980b9;
+  border-radius: 6px;
+  pointer-events: none;
+  font-style: italic;
+  transition: background 0.2s, color 0.2s;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+/* Tabs glassmorph compactas */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  animation: fadeInTabs 1.1s;
+}
+
+.tabs button {
+  background: rgba(41, 128, 185, 0.12);
+  color: #2980b9;
+  border: 2px solid #2980b9;
+  border-radius: 8px 8px 0 0;
+  padding: 7px 18px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, transform 0.2s, border 0.2s;
+  box-shadow: 0 2px 12px rgba(41, 128, 185, 0.10);
+  position: relative;
+}
+
+.tabs button:hover {
+  background: #2980b9;
+  color: #fff;
+  transform: scale(1.05);
+  border-color: #fff;
+}
+
+.activeTab {
+  background: linear-gradient(90deg, #111 0%, #2980b9 100%);
+  color: #fff !important;
+  box-shadow: 0 6px 24px rgba(41, 128, 185, 0.28);
+  transform: scale(1.08);
+  border-color: #fff;
+}
+
+/* Formulario y controles compactos */
+.formRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.inputText {
+  background: rgba(41, 128, 185, 0.08);
+  color: #e3eafc;
+  border: 2px solid #2980b9;
+  border-radius: 6px;
+  padding: 7px 12px;
+  margin: 0;
+  font-size: 0.95rem;
+  width: 100%;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.inputText:focus {
+  border: 2px solid #fff;
+  box-shadow: 0 0 8px #2980b988;
+}
+
+.inputFile {
+  background: rgba(41, 128, 185, 0.08);
+  color: #e3eafc;
+  border: 2px solid #2980b9;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 0.95rem;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.inputFile:focus {
+  border: 2px solid #fff;
+  box-shadow: 0 0 8px #2980b988;
+}
+
+.selectType {
+  background: rgba(41, 128, 185, 0.08);
+  color: #e3eafc;
+  border: 2px solid #2980b9;
+  border-radius: 6px;
+  padding: 7px 12px;
+  width: 110px;
+  font-size: 0.95rem;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.selectType:focus {
+  border: 2px solid #fff;
+  box-shadow: 0 0 8px #2980b988;
+}
+
+/* Botones glassmorph animados compactos */
+.addColumnBtn, .createTableBtn, .downloadTemplateBtn, .table button {
+  background: linear-gradient(90deg, #111 0%, #2980b9 100%);
+  color: #fff;
+  border: 2px solid #2980b9;
+  border-radius: 8px;
+  padding: 7px 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 12px rgba(41, 128, 185, 0.18);
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s, color 0.2s, border 0.2s;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.addColumnBtn:hover, .createTableBtn:hover, .downloadTemplateBtn:hover, .table button:hover {
+  background: #2980b9;
+  color: #fff;
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 6px 24px rgba(41, 128, 185, 0.32);
+  border-color: #fff;
+}
+
+.addColumnBtn:active, .createTableBtn:active, .downloadTemplateBtn:active, .table button:active {
+  transform: scale(0.98);
+}
+
+/* Mensajes */
+.successMsg {
+  color: #2980b9;
+  background: rgba(41, 128, 185, 0.12);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin-top: 14px;
+  font-weight: 500;
+  font-size: 1rem;
+  box-shadow: 0 2px 12px rgba(41, 128, 185, 0.12);
+  animation: fadeIn 0.7s;
+}
+
+.errorMsg {
+  color: #ff6b6b;
+  background: rgba(41, 128, 185, 0.12);
+  border-radius: 6px;
+  padding: 8px 14px;
+  margin-top: 14px;
+  font-weight: 500;
+  font-size: 1rem;
+  box-shadow: 0 2px 12px rgba(41, 128, 185, 0.12);
+  animation: fadeIn 0.7s;
+}
+
+/* Subir Excel */
+.uploadExcel {
+  margin-top: 10px;
+  background: rgba(41, 128, 185, 0.08);
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 2px 12px rgba(41, 128, 185, 0.08);
+  display: inline-block;
+  animation: fadeIn 1.2s;
+}
+
+/* Scrollbar minimalista */
+::-webkit-scrollbar {
+  width: 6px;
+  background: rgba(41, 128, 185, 0.12);
+}
+::-webkit-scrollbar-thumb {
+  background: #2980b9;
+  border-radius: 6px;
+}
+
+/* Animaciones */
+@keyframes fadeInBg {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeInContainer {
+  from { opacity: 0; transform: scale(1.05);}
+  to { opacity: 1; transform: scale(1);}
+}
+@keyframes fadeInSection {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+@keyframes fadeInTable {
+  from { opacity: 0; transform: scale(0.98);}
+  to { opacity: 1; transform: scale(1);}
+}
+@keyframes fadeInTabs {
+  from { opacity: 0; transform: translateY(-20px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+/* No hagas cambios aquí, ya que estos estilos son para "Crear tabla" y son usados por ese componente. */

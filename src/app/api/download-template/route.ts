@@ -22,15 +22,19 @@ export async function GET(req: NextRequest) {
 
   try {
     const db = await getDB();
-    const [columns] = await db.query(
-      `SHOW COLUMNS FROM \`${tableName}\``
-    );
+    // Obtén las columnas de la tabla, incluyendo id
+    const columns = await db.query(`
+      SELECT COLUMN_NAME 
+      FROM INFORMATION_SCHEMA.COLUMNS 
+      WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?
+      ORDER BY ORDINAL_POSITION
+    `, [tableName]);
     await db.end();
 
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet(tableName);
 
-    sheet.addRow(columns.map((col: any) => col.Field));
+    sheet.addRow(columns[0].map((col: any) => col.COLUMN_NAME));
 
     const buffer = await workbook.xlsx.writeBuffer();
 
