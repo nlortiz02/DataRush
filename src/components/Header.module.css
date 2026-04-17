@@ -1,3 +1,11 @@
+.headerSpacer {
+  height: calc(var(--header-height) + var(--nav-height));
+}
+
+:global(:root) {
+  --header-height: 70px;
+  --nav-height: 56px;
+}
 /* Header compartido */
 .header {
   display: flex;
@@ -7,9 +15,14 @@
   background: rgba(20, 20, 30, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 2px solid #2980b9;
-  height: 70px;
+  height: var(--header-height);
   box-shadow: 0 2px 16px rgba(41, 128, 185, 0.10);
   animation: fadeInContainer 1s;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
 }
 
 .logoSection {
@@ -64,12 +77,20 @@
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0 2rem;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  z-index: 1999;
 }
 
 .navContainer {
   display: flex;
   gap: 0;
   position: relative;
+  align-items: center;
+  height: 100%;
 }
 
 .navItem {

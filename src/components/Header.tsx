@@ -95,14 +95,21 @@ export default function Header() {
             )}
           </div>
 
+          <button
+            className={styles.navBtn}
+            onClick={() => router.push('/Tickets')}
+          >
+            Tickets
+          </button>
           {/* Botones placeholders */}
-          <button className={styles.navBtn} disabled>Botón 2</button>
           <button className={styles.navBtn} disabled>Botón 3</button>
           <button className={styles.navBtn} disabled>Botón 4</button>
           <button className={styles.navBtn} disabled>Botón 5</button>
           <button className={styles.navBtn} disabled>Botón 6</button>
         </div>
       </nav>
+
+      <div className={styles.headerSpacer} aria-hidden="true" />
     </>
   );
 }
