@@ -172,7 +172,7 @@ export default function Plantillas() {
   }, [showFilter, uniqueValues]);
 
   return (
-    <div style={{ background: '#111' }}>
+    <div className="page-shell">
       <Header />
       <div className={styles.glassBg}>
         <div className={styles.glassContainer}>

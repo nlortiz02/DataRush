@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { Toaster, toast } from 'react-hot-toast';
+import ThemeToggle from '../../components/ThemeToggle';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -74,6 +75,9 @@ const LoginPage = () => {
     <>
       <Toaster position="top-center" reverseOrder={false} />
       <div className={styles.container}>
+        <div className={styles.themeToggle}>
+          <ThemeToggle />
+        </div>
         <div className={styles.backgroundShapes}>
           <div className={styles.shape1}></div>
           <div className={styles.shape2}></div>

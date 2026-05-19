@@ -30,6 +30,12 @@ const STATUS_OPTIONS: Ticket["status"][] = [
 	"resuelto",
 ];
 
+type LightboxImage = {
+	src: string;
+	alt: string;
+	label: string;
+} | null;
+
 export default function TicketsPage() {
 	useSessionGuard();
 
@@ -52,6 +58,8 @@ export default function TicketsPage() {
 	const [filterId, setFilterId] = useState("");
 	const [showCreatePanel, setShowCreatePanel] = useState(true);
 	const [showScrollTop, setShowScrollTop] = useState(false);
+	const [lightboxImage, setLightboxImage] = useState<LightboxImage>(null);
+	const [isZoomed, setIsZoomed] = useState(false);
 
 	const [solutionDrafts, setSolutionDrafts] = useState<Record<number, string>>({});
 	const [solutionImages, setSolutionImages] = useState<Record<number, File | null>>({});
@@ -90,6 +98,15 @@ export default function TicketsPage() {
 		filterText,
 	]);
 
+	const ticketStats = useMemo(() => {
+		return {
+			total: tickets.length,
+			open: tickets.filter((ticket) => ticket.status !== "resuelto").length,
+			resolved: tickets.filter((ticket) => ticket.status === "resuelto").length,
+			critical: tickets.filter((ticket) => ticket.priority === "critica").length,
+		};
+	}, [tickets]);
+
 	const loadTickets = async () => {
 		setIsLoading(true);
 		setError("");
@@ -115,6 +132,24 @@ export default function TicketsPage() {
 	useEffect(() => {
 		loadTickets();
 	}, []);
+
+	useEffect(() => {
+		if (!lightboxImage) return;
+
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape") {
+				setLightboxImage(null);
+				setIsZoomed(false);
+			}
+		};
+
+		document.addEventListener("keydown", handleKeyDown);
+		document.body.style.overflow = "hidden";
+		return () => {
+			document.removeEventListener("keydown", handleKeyDown);
+			document.body.style.overflow = "";
+		};
+	}, [lightboxImage]);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -231,6 +266,14 @@ export default function TicketsPage() {
 		}
 	};
 
+	const formatDate = (value: string | null) =>
+		value ? new Date(value).toLocaleString() : null;
+
+	const openLightbox = (src: string, alt: string, label: string) => {
+		setLightboxImage({ src, alt, label });
+		setIsZoomed(false);
+	};
+
 	return (
 		<div className={styles.container}>
 			<Header />
@@ -261,6 +304,20 @@ export default function TicketsPage() {
 							</button>
 						)}
 					</div>
+				</section>
+
+				<section className={styles.statsGrid}>
+					{([
+						["Total", ticketStats.total],
+						["Abiertos", ticketStats.open],
+						["Resueltos", ticketStats.resolved],
+						["Críticos", ticketStats.critical],
+					] as const).map(([label, value]) => (
+						<div key={label} className={styles.statCard}>
+							<span>{label}</span>
+							<strong>{value}</strong>
+						</div>
+					))}
 				</section>
 
 				{error && <div className={styles.errorBanner}>{error}</div>}
@@ -415,7 +472,7 @@ export default function TicketsPage() {
 											<div>
 												<h3 className={styles.ticketTitle}>{ticket.title}</h3>
 												<p className={styles.ticketMeta}>
-													#{ticket.id} - {ticket.created_by}
+													#{ticket.id} · creado por {ticket.created_by}
 												</p>
 											</div>
 											<div className={styles.badges}>
@@ -427,46 +484,105 @@ export default function TicketsPage() {
 												</span>
 											</div>
 										</header>
-										<p className={styles.ticketDescription}>{ticket.description}</p>
+										<div className={styles.ticketBodyGrid}>
+											<div className={styles.ticketPrimary}>
+												<div className={styles.conversationCard}>
+													<span className={styles.sectionEyebrow}>Solicitud</span>
+													<p className={styles.ticketDescription}>{ticket.description}</p>
+												</div>
 
-										{ticket.user_image_url && (
-											<div className={styles.imageBox}>
-												<span className={styles.imageLabel}>Imagen del usuario</span>
-												<img
-													className={styles.ticketImage}
-													src={ticket.user_image_url}
-													alt="Imagen del ticket"
-												/>
-											</div>
-										)}
+												{ticket.user_image_url && (
+													<div className={styles.imageBox}>
+														<span className={styles.imageLabel}>Adjunto del usuario</span>
+														<button
+															type="button"
+															className={styles.imageButton}
+															onClick={() =>
+																openLightbox(
+																	ticket.user_image_url as string,
+																	"Imagen del ticket",
+																	"Adjunto del usuario"
+																)
+															}
+														>
+															<img
+																className={styles.ticketImage}
+																src={ticket.user_image_url}
+																alt="Imagen del ticket"
+															/>
+															<span>Ver imagen</span>
+														</button>
+													</div>
+												)}
 
-										<div className={styles.ticketInfo}>
-											<span>Creado: {new Date(ticket.created_at).toLocaleString()}</span>
-											{ticket.resolved_at && (
-												<span>Resuelto: {new Date(ticket.resolved_at).toLocaleString()}</span>
-											)}
-										</div>
+												{ticket.solution_text && (
+													<div className={styles.solutionBox}>
+														<span className={styles.sectionEyebrow}>Resolución IT</span>
+														<p>{ticket.solution_text}</p>
+														{ticket.resolved_by && (
+															<span className={styles.solutionMeta}>Por {ticket.resolved_by}</span>
+														)}
+													</div>
+												)}
 
-										{ticket.solution_text && (
-											<div className={styles.solutionBox}>
-												<strong>Solucion IT</strong>
-												<p>{ticket.solution_text}</p>
-												{ticket.resolved_by && (
-													<span className={styles.solutionMeta}>Por: {ticket.resolved_by}</span>
+												{ticket.solution_image_url && (
+													<div className={styles.imageBox}>
+														<span className={styles.imageLabel}>Adjunto de solución</span>
+														<button
+															type="button"
+															className={styles.imageButton}
+															onClick={() =>
+																openLightbox(
+																	ticket.solution_image_url as string,
+																	"Imagen de solución",
+																	"Adjunto de solución"
+																)
+															}
+														>
+															<img
+																className={styles.ticketImage}
+																src={ticket.solution_image_url}
+																alt="Imagen de solución"
+															/>
+															<span>Ver imagen</span>
+														</button>
+													</div>
 												)}
 											</div>
-										)}
 
-										{ticket.solution_image_url && (
-											<div className={styles.imageBox}>
-												<span className={styles.imageLabel}>Imagen de solucion</span>
-												<img
-													className={styles.ticketImage}
-													src={ticket.solution_image_url}
-													alt="Imagen de solucion"
-												/>
-											</div>
-										)}
+											<aside className={styles.ticketSidebar}>
+												<div className={styles.detailCard}>
+													<span className={styles.sectionEyebrow}>Detalle</span>
+													<div className={styles.detailList}>
+														<div><span>Asignado</span><strong>{ticket.assigned_to || "Sin asignar"}</strong></div>
+														<div><span>Actualizado</span><strong>{formatDate(ticket.updated_at)}</strong></div>
+														<div><span>Resuelto por</span><strong>{ticket.resolved_by || "-"}</strong></div>
+													</div>
+												</div>
+
+												<div className={styles.timelineCard}>
+													<span className={styles.sectionEyebrow}>Actividad</span>
+													<div className={styles.timeline}>
+														<div>
+															<strong>Creado</strong>
+															<span>{formatDate(ticket.created_at)}</span>
+														</div>
+														{ticket.updated_at !== ticket.created_at && (
+															<div>
+																<strong>Actualizado</strong>
+																<span>{formatDate(ticket.updated_at)}</span>
+															</div>
+														)}
+														{ticket.resolved_at && (
+															<div>
+																<strong>Resuelto</strong>
+																<span>{formatDate(ticket.resolved_at)}</span>
+															</div>
+														)}
+													</div>
+												</div>
+											</aside>
+										</div>
 
 										<div className={styles.actions}>
 											{isAdmin && (
@@ -578,6 +694,52 @@ export default function TicketsPage() {
 					</div>
 				</section>
 			</main>
+
+			{lightboxImage && (
+				<div
+					className={styles.lightbox}
+					role="dialog"
+					aria-modal="true"
+					aria-label={lightboxImage.label}
+					onClick={() => {
+						setLightboxImage(null);
+						setIsZoomed(false);
+					}}
+				>
+					<div className={styles.lightboxTopbar}>
+						<span>{lightboxImage.label}</span>
+						<div>
+							<button
+								type="button"
+								onClick={(event) => {
+									event.stopPropagation();
+									setIsZoomed((prev) => !prev);
+								}}
+							>
+								{isZoomed ? "Restablecer" : "Zoom"}
+							</button>
+							<button
+								type="button"
+								onClick={(event) => {
+									event.stopPropagation();
+									setLightboxImage(null);
+									setIsZoomed(false);
+								}}
+							>
+								Cerrar
+							</button>
+						</div>
+					</div>
+					<div className={styles.lightboxCanvas}>
+						<img
+							className={`${styles.lightboxImage} ${isZoomed ? styles.lightboxImageZoomed : ""}`}
+							src={lightboxImage.src}
+							alt={lightboxImage.alt}
+							onClick={(event) => event.stopPropagation()}
+						/>
+					</div>
+				</div>
+			)}
 
 				<button
 					className={`${styles.scrollTopBtn} ${
